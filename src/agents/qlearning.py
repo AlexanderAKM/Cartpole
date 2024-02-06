@@ -2,6 +2,8 @@ import numpy as np
 import gymnasium as gym
 import time
 import math
+import csv
+import pandas as pd
 
 env = gym.make("CartPole-v1")
 #print(env.action_space.n)
@@ -9,7 +11,7 @@ env = gym.make("CartPole-v1")
 
 LEARNING_RATE = 0.1
 DISCOUNT = 0.95
-EPISODES = 6000
+EPISODES = 1000
 SHOW_EVERY = 2000
 
 
@@ -31,9 +33,8 @@ def get_discrete_state(state, bins=OBSERVATION):
     pole_angular_velocity = np.digitize(state[3], np.linspace(-1, 1, bins[3])) - 1
     
     return (cart_position, cart_velocity, pole_angle, pole_angular_velocity)
-
-rewards_20_episodes = 0    
-all_rewards = []
+ 
+rewards_episodes = {'Episode': [], 'Reward': []}
 
 for episode in range(EPISODES + 1):
     state = env.reset()
@@ -70,10 +71,12 @@ for episode in range(EPISODES + 1):
         
         discrete_state = new_discrete_state
     
-    rewards_20_episodes += total_reward
-    if episode % 20 == 0:
-        average_reward = rewards_20_episodes // 20
-        all_rewards.append(average_reward)
-        rewards_20_episodes = 0
+    
+    rewards_episodes['Episode'].append(episode)
+    rewards_episodes['Reward'].append(total_reward)
+        
+rewards_file_path = 'data/rewards.csv'
+df_rewards = pd.DataFrame(rewards_episodes)
+df_rewards.to_csv(rewards_file_path, index=False)
 
 env.close()
