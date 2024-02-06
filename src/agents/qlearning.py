@@ -3,17 +3,17 @@ import gymnasium as gym
 import time
 import math
 
-env = gym.make("CartPole-v1", render_mode="rgb_array")
+env = gym.make("CartPole-v1")
 #print(env.action_space.n)
 #print(env.observation_space)
 
 LEARNING_RATE = 0.1
 DISCOUNT = 0.95
-EPISODES = 20000
+EPISODES = 6000
 SHOW_EVERY = 2000
 
 
-OBSERVATION = [30, 30, 50, 50]
+OBSERVATION = [20, 20, 20, 20]
 
 max_epsilon = 1.0
 min_epsilon = 0.01
@@ -24,21 +24,18 @@ q_table = np.random.uniform(low=0, high=1, size=(OBSERVATION + [env.action_space
 #print(q_table)
 
 def get_discrete_state(state, bins=OBSERVATION):
-    print(f"State received: {state}")
-    velocity = np.linspace(-1, 1, bins[1])
-    angular_velocity = np.linspace(-1, 1, bins[3])
     #print(f"state: {state} and velocity: {velocity} and angular_velocity: {angular_velocity}")
-    cart_position = np.digitize(state[0], np.linspace(-4.8, 4.8, bins[0]))
-    cart_velocity = np.digitize(state[1], velocity)
-    pole_angle = np.digitize(state[2], np.linspace(-0.418, 0.418, bins[2]))
-    pole_angular_velocity = np.digitize(state[3], angular_velocity)
+    cart_position = np.digitize(state[0], np.linspace(-4.8, 4.8, bins[0])) - 1
+    cart_velocity = np.digitize(state[1], np.linspace(-1, 1, bins[1])) - 1
+    pole_angle = np.digitize(state[2], np.linspace(-0.418, 0.418, bins[2])) - 1
+    pole_angular_velocity = np.digitize(state[3], np.linspace(-1, 1, bins[3])) - 1
     
     return (cart_position, cart_velocity, pole_angle, pole_angular_velocity)
                  
 
 for episode in range(EPISODES + 1):
     state = env.reset()
-    print(f"state: {state}")
+    #print(f"state: {state}")
     discrete_state = get_discrete_state(state[0])
     done = False
     epsilon = min_epsilon + (max_epsilon - min_epsilon) * math.exp(-decay_rate * episode)
