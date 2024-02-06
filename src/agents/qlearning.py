@@ -31,11 +31,13 @@ def get_discrete_state(state, bins=OBSERVATION):
     pole_angular_velocity = np.digitize(state[3], np.linspace(-1, 1, bins[3])) - 1
     
     return (cart_position, cart_velocity, pole_angle, pole_angular_velocity)
-                 
+
+rewards_20_episodes = 0    
+all_rewards = []
 
 for episode in range(EPISODES + 1):
     state = env.reset()
-    #print(f"state: {state}")
+    total_reward = 0
     discrete_state = get_discrete_state(state[0])
     done = False
     epsilon = min_epsilon + (max_epsilon - min_epsilon) * math.exp(-decay_rate * episode)
@@ -54,7 +56,8 @@ for episode in range(EPISODES + 1):
 
         new_state, reward, done, _, _ = env.step(action)  # Unpack the tuple correctly
         new_discrete_state = get_discrete_state(new_state)  # Pass the new state array directly
-        
+        total_reward += reward
+
         if render:
             env.render()
             time.sleep(0.01)
@@ -66,5 +69,11 @@ for episode in range(EPISODES + 1):
             q_table[discrete_state + (action,)] = new_q
         
         discrete_state = new_discrete_state
+    
+    rewards_20_episodes += total_reward
+    if episode % 20 == 0:
+        average_reward = rewards_20_episodes // 20
+        all_rewards.append(average_reward)
+        rewards_20_episodes = 0
 
 env.close()
