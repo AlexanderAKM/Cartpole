@@ -3,7 +3,7 @@ import gymnasium as gym
 import time
 import math
 
-env = gym.make("CartPole-v1")
+env = gym.make("CartPole-v1", render_mode="rgb_array")
 #print(env.action_space.n)
 #print(env.observation_space)
 
@@ -39,7 +39,7 @@ def get_discrete_state(state, bins=OBSERVATION):
 for episode in range(EPISODES + 1):
     state = env.reset()
     print(f"state: {state}")
-    discrete_state = get_discrete_state(state)
+    discrete_state = get_discrete_state(state[0])
     done = False
     epsilon = min_epsilon + (max_epsilon - min_epsilon) * math.exp(-decay_rate * episode)
 
@@ -55,7 +55,7 @@ for episode in range(EPISODES + 1):
         else:
             action = np.random.randint(0, env.action_space.n)
 
-        new_state, reward, done, _ = env.step(action)  # Unpack the tuple correctly
+        new_state, reward, done, _, _ = env.step(action)  # Unpack the tuple correctly
         new_discrete_state = get_discrete_state(new_state)  # Pass the new state array directly
         
         if render:
