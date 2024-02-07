@@ -11,7 +11,7 @@ env = gym.make("CartPole-v1")
 
 LEARNING_RATE = 0.1
 DISCOUNT = 0.95
-EPISODES = 1000
+EPISODES = 6000
 SHOW_EVERY = 2000
 
 
@@ -75,7 +75,7 @@ for episode in range(EPISODES + 1):
     rewards_episodes['Episode'].append(episode)
     rewards_episodes['Reward'].append(total_reward)
         
-rewards_file_path = 'data/rewards.csv'
+rewards_file_path = 'data/rewards_qlearning_6000.csv'
 df_rewards = pd.DataFrame(rewards_episodes)
 df_rewards.to_csv(rewards_file_path, index=False)
 
