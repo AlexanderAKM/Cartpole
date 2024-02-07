@@ -7,8 +7,6 @@ import math
 import pandas as pd
 
 env = gym.make("CartPole-v1")
-#print(env.action_space.n)
-#print(env.observation_space)
 
 LEARNING_RATE = 0.1
 DISCOUNT = 0.95
@@ -23,11 +21,8 @@ min_epsilon = 0.01
 decay_rate = 0.001
 
 q_table = np.random.uniform(low=0, high=1, size=(OBSERVATION + [env.action_space.n]))
-#q_table.shape
-#print(q_table)
 
 def get_discrete_state(state, bins=OBSERVATION):
-    #print(f"state: {state} and velocity: {velocity} and angular_velocity: {angular_velocity}")
     cart_position = np.digitize(state[0], np.linspace(-4.8, 4.8, bins[0])) - 1
     cart_velocity = np.digitize(state[1], np.linspace(-1, 1, bins[1])) - 1
     pole_angle = np.digitize(state[2], np.linspace(-0.418, 0.418, bins[2])) - 1
@@ -36,6 +31,14 @@ def get_discrete_state(state, bins=OBSERVATION):
     return (cart_position, cart_velocity, pole_angle, pole_angular_velocity)
  
 rewards_episodes = {'Episode': [], 'Reward': []}
+
+def get_action(epsilon, discrete_state):
+    if np.random.random() > epsilon:
+        action = np.argmax(q_table[discrete_state])
+    else:
+        action = np.random.randint(0, env.action_space.n) 
+
+    return action   
 
 for episode in range(EPISODES + 1):
     state = env.reset()
@@ -50,32 +53,32 @@ for episode in range(EPISODES + 1):
     else:
         render = False
 
+    action = get_action(epsilon, discrete_state)
+
     while not terminated and not truncated:
-        if np.random.random() > epsilon:
-            action = np.argmax(q_table[discrete_state])
-        else:
-            action = np.random.randint(0, env.action_space.n)
-
         new_state, reward, terminated, truncated, _ = env.step(action)  # Unpack the tuple correctly
-        new_discrete_state = get_discrete_state(new_state)  # Pass the new state array directly
         total_reward += reward
-
+        
+        new_discrete_state = get_discrete_state(new_state)
+        new_action = get_action(epsilon, new_discrete_state)
+        
         if render:
             env.render()
             time.sleep(0.01)
         
         if not terminated and not truncated:
             current_q = q_table[discrete_state + (action,)]
-            new_q = current_q + LEARNING_RATE * (reward + DISCOUNT * np.max(q_table[new_discrete_state]) - current_q)
+            new_q = q_table[new_discrete_state + (new_action,)]
+            new_q = current_q + LEARNING_RATE * (reward + DISCOUNT * new_q - current_q)
             q_table[discrete_state + (action,)] = new_q
         
         discrete_state = new_discrete_state
-    
+        action = new_action
     
     rewards_episodes['Episode'].append(episode)
     rewards_episodes['Reward'].append(total_reward)
         
-rewards_file_path = 'data/rewards_qlearning_6000.csv'
+rewards_file_path = 'data/rewards_SARSA_6000.csv'
 df_rewards = pd.DataFrame(rewards_episodes)
 df_rewards.to_csv(rewards_file_path, index=False)
 

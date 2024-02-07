@@ -13,8 +13,8 @@ def plot_rewards(csv_file_path):
     plt.ylabel('Reward')
     plt.title('Rewards over Episodes')
     plt.legend()
-    plt.savefig('data/q_learning_6000.png')
+    plt.savefig('data/SARSA_6000.png')
     plt.show()
 
-plot_rewards('data/rewards_qlearning_6000.csv')
+plot_rewards('data/rewards_SARSA_6000.csv')
 
