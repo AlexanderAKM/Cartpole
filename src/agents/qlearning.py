@@ -40,7 +40,7 @@ for episode in range(EPISODES + 1):
     state = env.reset()
     total_reward = 0
     discrete_state = get_discrete_state(state[0])
-    done = False
+    terminated, truncated = False, False
     epsilon = min_epsilon + (max_epsilon - min_epsilon) * math.exp(-decay_rate * episode)
 
     if episode % SHOW_EVERY == 0:
@@ -49,22 +49,22 @@ for episode in range(EPISODES + 1):
     else:
         render = False
 
-    while not done:
+    while not terminated and not truncated:
         if np.random.random() > epsilon:
             action = np.argmax(q_table[discrete_state])
         else:
             action = np.random.randint(0, env.action_space.n)
 
-        new_state, reward, done, _, _ = env.step(action)  # Unpack the tuple correctly
+        new_state, reward, terminated, truncated, _ = env.step(action)  # Unpack the tuple correctly
         new_discrete_state = get_discrete_state(new_state)  # Pass the new state array directly
         total_reward += reward
-
+        #print(env.step(action))
         if render:
             env.render()
             time.sleep(0.01)
 
         
-        if not done:
+        if not terminated and not truncated:
             current_q = q_table[discrete_state + (action,)]
             new_q = current_q + LEARNING_RATE * (reward + DISCOUNT * np.max(q_table[new_discrete_state]) - current_q)
             q_table[discrete_state + (action,)] = new_q
