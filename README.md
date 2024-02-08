@@ -25,9 +25,9 @@ pip install -r requirements.txt
 ### Plotting
 
 If you want to plot the data from an experiment, for example for DQN for 600 steps, use:
-'''
+```sh
 python src/plot.py -f data/input/rewards_DQN_600.csv
-'''
+```
 
 ## License
 
