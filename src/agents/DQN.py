@@ -89,7 +89,7 @@ def select_action(state):
     else:
         return torch.tensor([[env.action_space.sample()]],
                             device = device, dtype=torch.long)
-    
+
 
 episode_durations = []
 rewards_episodes = {'Episode': [], 'Reward': []}
