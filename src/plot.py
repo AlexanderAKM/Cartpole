@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import pandas as pd
+import argparse
 
 def plot_rewards(csv_file_path):
     rolling_window = 50
@@ -13,8 +14,16 @@ def plot_rewards(csv_file_path):
     plt.ylabel('Reward')
     plt.title('Rewards over Episodes')
     plt.legend()
-    plt.savefig('data/DQN_600.png')
+    plt.savefig(f'{csv_file_path[0:-4]}.png')
     plt.show()
 
-plot_rewards('data/rewards_DQN_600.csv')
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description='Plot rewards from CSV file.')
+    parser.add_argument('-f', '--file', type=str, help='Path to CSV file containing rewards.')
+
+    args = parser.parse_args()
+    if args.file:
+        plot_rewards(args.file)
+
+#plot_rewards('data/rewards_DQN_600.csv')
 

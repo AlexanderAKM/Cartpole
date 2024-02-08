@@ -12,12 +12,6 @@ The CartPole task is a benchmark challenge in reinforcement learning. The agent 
 
 ## Getting Started
 
-### Prerequisites
-
-- OpenAI Gymnasium
-- PyTorch (only for DQN)
-- NumPy
-
 ### Installation
 
 First, clone this repository:
@@ -26,7 +20,7 @@ https://github.com/AlexanderAKM/Cartpole.git
 Then, install the required dependencies:
 
 ```sh
-pip install gym torch numpy
+pip install -r requirements.txt
 ```
 
 ## License
