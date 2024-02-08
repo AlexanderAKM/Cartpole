@@ -27,7 +27,7 @@ Then, install the required dependencies:
 
 ```sh
 pip install gym torch numpy
-
+```
 
 ## License
 
