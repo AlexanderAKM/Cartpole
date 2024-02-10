@@ -22,11 +22,18 @@ Then, install the required dependencies:
 ```sh
 pip install -r requirements.txt
 ```
+### Running Agents
+
+If you want to run an agent, for example, SARSA for 4000 episodes, use:
+```sh
+python src/main.py --agent sarsa --episodes 4000
+```
+
 ### Plotting
 
-If you want to plot the data from an experiment, for example for DQN for 600 steps, use:
+If you want to plot the data from an experiment, for example, SARSA for 4000 episodes, use:
 ```sh
-python src/plot.py -f data/input/rewards_DQN_600.csv
+python src/plot.py -f data/input/rewards_sarsa_4000.csv
 ```
 
 ## License
