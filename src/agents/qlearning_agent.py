@@ -9,14 +9,10 @@ import pandas as pd
 
 def run (episodes):
     env = gym.make("CartPole-v1")
-    #print(env.action_space.n)
-    #print(env.observation_space)
 
     LEARNING_RATE = 0.1
     DISCOUNT = 0.95
-    EPISODES = 6000
     SHOW_EVERY = 2000
-
 
     OBSERVATION = [20, 20, 20, 20]
 
@@ -25,11 +21,8 @@ def run (episodes):
     decay_rate = 0.001
 
     q_table = np.random.uniform(low=0, high=1, size=(OBSERVATION + [env.action_space.n]))
-    #q_table.shape
-    #print(q_table)
 
     def get_discrete_state(state, bins=OBSERVATION):
-        #print(f"state: {state} and velocity: {velocity} and angular_velocity: {angular_velocity}")
         cart_position = np.digitize(state[0], np.linspace(-4.8, 4.8, bins[0])) - 1
         cart_velocity = np.digitize(state[1], np.linspace(-1, 1, bins[1])) - 1
         pole_angle = np.digitize(state[2], np.linspace(-0.418, 0.418, bins[2])) - 1
@@ -39,7 +32,7 @@ def run (episodes):
     
     rewards_episodes = {'Episode': [], 'Reward': []}
 
-    for episode in range(EPISODES + 1):
+    for episode in range(episodes):
         state = env.reset()
         total_reward = 0
         discrete_state = get_discrete_state(state[0])
@@ -72,7 +65,6 @@ def run (episodes):
                 q_table[discrete_state + (action,)] = new_q
             
             discrete_state = new_discrete_state
-        
         
         rewards_episodes['Episode'].append(episode)
         rewards_episodes['Reward'].append(total_reward)

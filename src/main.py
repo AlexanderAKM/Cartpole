@@ -1,5 +1,4 @@
 import argparse
-from agents import dqn_agent, sarsa_agent, qlearning_agent
 from agents.sarsa_agent import run as run_sarsa
 from agents.dqn_agent import run as run_dqn
 from agents.qlearning_agent import run as run_qlearning
@@ -12,8 +11,8 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     if args.agent == 'dqn':
-        dqn_agent.run_dqn(args.episodes)
+        run_dqn(args.episodes)
     elif args.agent == 'sarsa':
-        sarsa_agent.run_sarsa(args.episodes)
+        run_sarsa(args.episodes)
     elif args.agent == 'qlearning':
-        qlearning_agent.run_qlearning(args.episodes)
+        run_qlearning(args.episodes)
