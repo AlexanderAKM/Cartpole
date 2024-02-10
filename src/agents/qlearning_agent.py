@@ -75,7 +75,7 @@ for episode in range(EPISODES + 1):
     rewards_episodes['Episode'].append(episode)
     rewards_episodes['Reward'].append(total_reward)
         
-rewards_file_path = 'data/rewards_qlearning_6000.csv'
+rewards_file_path = 'data/input/rewards_qlearning_6000.csv'
 df_rewards = pd.DataFrame(rewards_episodes)
 df_rewards.to_csv(rewards_file_path, index=False)
 
