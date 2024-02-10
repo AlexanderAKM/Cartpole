@@ -13,7 +13,6 @@ def run(episodes):
     DISCOUNT = 0.95
     SHOW_EVERY = 2000
 
-
     OBSERVATION = [20, 20, 20, 20]
 
     max_epsilon = 1.0
