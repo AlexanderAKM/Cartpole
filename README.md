@@ -44,3 +44,8 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 * OpenAI Gym for providing the CartPole environment.
 * Documentation of Pytorch on DQN implementation for cartpole: https://pytorch.org/tutorials/intermediate/reinforcement_q_learning.html
+
+## Future Ideas
+
+* Make a very, very simple MLP
+* Do much more hyperparameter tuning
