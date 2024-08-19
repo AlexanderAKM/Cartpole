@@ -47,5 +47,4 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Future Ideas
 
-* Make a very, very simple MLP
 * Do much more hyperparameter tuning
